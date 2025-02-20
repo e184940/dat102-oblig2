@@ -31,11 +31,15 @@ public class sorteringMålinger {
 		}
 	}
 
-	public static void quickSort(Integer[] arr, int lav, int hoy) {
+	public static void quickSort(Integer[] arr) {
+		quickSortStart(arr, 0, arr.length - 1);
+	}
+	
+	public static void quickSortStart(Integer[] arr, int lav, int hoy) {
 		if (lav < hoy) {
 			int pivotIndex = partition(arr, lav, hoy);
-			quickSort(arr, lav, pivotIndex - 1);
-			quickSort(arr, pivotIndex + 1, hoy);
+			quickSortStart(arr, lav, pivotIndex - 1);
+			quickSortStart(arr, pivotIndex + 1, hoy);
 		}
 	}
 
@@ -58,11 +62,16 @@ public class sorteringMålinger {
 		return i + 1;
 	}
 
-	public static void mergeSort(Integer[] arr, int venstre, int hoyre) {
+	public static void mergeSort(Integer[] array) {
+		if (array.length < 2) return;
+		mergeSortStart(array, 0, array.length - 1);
+	}
+	
+	public static void mergeSortStart(Integer[] arr, int venstre, int hoyre) {
 		if (venstre < hoyre) {
 			int midt = (venstre + hoyre) / 2;
-			mergeSort(arr, venstre, midt);
-			mergeSort(arr, midt + 1, hoyre);
+			mergeSortStart(arr, venstre, midt);
+			mergeSortStart(arr, midt + 1, hoyre);
 			merge(arr, venstre, midt, hoyre);
 		}
 	}
@@ -74,7 +83,7 @@ public class sorteringMålinger {
 		Integer[] venstreArray = new Integer[n1];
 		Integer[] hoyreArray = new Integer[n2];
 
-		System.arraycopy(arr, venstre, venstreArray, 0, n2);
+		System.arraycopy(arr, venstre, venstreArray, 0, n1);
 		System.arraycopy(arr, midt + 1, hoyreArray, 0, n2);
 
 		int i = 0;
