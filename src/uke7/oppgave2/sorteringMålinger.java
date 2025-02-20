@@ -1,8 +1,35 @@
 package uke7.oppgave2;
 
-public class sorteringMålinger {
+import java.util.Random;
 
-	public static void insertonSort(Integer[] arr) {
+public class sorteringMålinger {
+	
+	public static void main(String[] args) {
+		int[] testSizes = {32000, 64000, 128000};
+		System.out.println("N         Målt tid i ms      Teoretisk tid");
+		
+		for(int n : testSizes) {
+			Integer[] arr1 = genererTilfeldigUsortTabell(n);
+			long startTid = System.currentTimeMillis();
+			insertionSort(arr);
+			long sluttTid = System.currentTimeMillis();
+			
+			long totalTid = (sluttTid - startTid);
+			long teoriTid = totalTid 
+		}
+	}
+	
+	public static Integer[] genererTilfeldigUsortTabell(int n) {
+		Integer[] enUsortTabell = new Integer[n];
+
+		Random tilfeldig = new Random();
+		for (int i = 0; i < n; i++) {
+			enUsortTabell[i] = tilfeldig.nextInt();
+		}
+		return enUsortTabell;
+	}
+
+	public static void insertionSort(Integer[] arr) {
 		int n = arr.length;
 		for (int i = 1; i < n; i++) {
 			int tempI = arr[i];

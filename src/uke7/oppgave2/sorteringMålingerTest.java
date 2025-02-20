@@ -14,7 +14,7 @@ class sorteringMålingerTest {
 	
 	@Test
 	void testInsertion() {
-		sorteringMålinger.insertonSort(arr1);
+		sorteringMålinger.insertionSort(arr1);
 		assertArrayEquals(arr1, rett);
 	}
 	
