@@ -2,26 +2,35 @@ package uke7.oppgave2;
 
 import java.util.Random;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class sorteringMålinger {
 
 	public static void main(String[] args) {
-		int[] testN = { 32000, 64000, 128000 };
-		int antMaalinger = 5;
-		System.out.println("N        Ant. målinger     Målt tid i ms      Teoretisk tid");
+		int[] testN = {32000, 64000, 128000};
+		int antMaalinger = 1;
+		
+		tabellSorteringer("Insertion Sort", testN, antMaalinger, sorteringMålinger::insertionSort, n -> (double)n * n);
+		tabellSorteringer("Selection Sort", testN, antMaalinger, sorteringMålinger::selectionSort, n -> (double)n * n);
+		tabellSorteringer("Quick Sort", testN, antMaalinger, sorteringMålinger::quickSort, n -> n * Math.log(n));
+		tabellSorteringer("Merge Sort", testN, antMaalinger, sorteringMålinger::mergeSort, n -> n * Math.log(n));
 	}
 
 	public static void tabellSorteringer(String metode, int[] testN, int antMaalinger,
-			Consumer<Integer[]> sortFunksjon) {
-		long c = -1;
+			Consumer<Integer[]> sortFunksjon, Function<Integer, Double> teoriFunk) {
+		double c = -1;
+		
+		System.out.println(metode);
+		System.out.println("N        Ant. målinger     Målt tid i ms      Teoretisk tid");
+
 
 		for (int n : testN) {
 			long sumTid = 0;
 
 			for (int i = 0; i < antMaalinger; i++) {
-				Integer[] arr1 = genererTilfeldigUsortTabell(n);
+				Integer[] arr = genererTilfeldigUsortTabell(n);
 				long startTid = System.currentTimeMillis();
-				insertionSort(arr1);
+				insertionSort(arr);
 				long sluttTid = System.currentTimeMillis();
 
 				sumTid += (sluttTid - startTid);
@@ -30,13 +39,14 @@ public class sorteringMålinger {
 			long snittTid = sumTid / antMaalinger;
 
 			if (c == -1) {
-				c = snittTid / (n * n);
+				c = snittTid / teoriFunk.apply(n);
 			}
 
-			long teoriTid = (long) (c * n * n);
-			System.out.println(
-					n + "        " + antMaalinger + "               " + snittTid + "                  " + teoriTid);
+			double teoriTid = c * teoriFunk.apply(n);
+			System.out.println(n + "        " + antMaalinger + "               " + snittTid + "                  " + teoriTid);
+
 		}
+		System.out.println();
 	}
 
 	public static Integer[] genererTilfeldigUsortTabell(int n) {
